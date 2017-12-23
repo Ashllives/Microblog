@@ -1,0 +1,18 @@
+# i dno not know when this appeared 
+pyvenv.cfg
+
+# empty folder for some reason
+Include
+
+# all dependencies
+Lib
+
+# a json file created by one the installed apps (i guess)
+pip-selfcheck.json
+
+# all databases
+app.db
+test.db
+
+# temporary folder for logs
+tmp
