@@ -1,5 +1,18 @@
 <table>
 	<tr valign="top">
-		<td><img src="{{ post.author.avatar(50) }}"></td><td><i>{{ post.author.nickname }} says:</i><br>{{ post.body }}</td>
+		<td>
+			<div class="container-fluid">
+				<a href="{{ url_for('user', nickname=post.author.nickname, _external=True) }}">
+					<img class="rounded-circle" src="{{ post.author.avatar(50) }}">
+				</a>
+				<td>
+					{% autoescape false %}
+					<i>{{ _('%(nickname)s said %(when)s:', nickname=post.author.nickname, when=momentjs(post.timestamp).fromNow()) }}</i>
+					<br>
+					{% endautoescape %}
+					<strong>{{ post.body }}</strong>
+				</td>	
+			</div>
+		</td>
 	</tr>
 </table>

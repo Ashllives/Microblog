@@ -2,27 +2,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<h1>Edit Your Profile</h1>
-	<form action="" method="post" name="edit">
-		{{ form.hidden_tag() }}
-		<table>
-			<tr>
-				<td>Your nickname:</td>
-				<td>
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+		<div class="col-md-8">
+			<div class="form-wrap" style="padding-top: 3em">
+				<h2>{{ _('Edit Your Profile') }}</h2>
+				<hr>
+			</div>
+			{% include 'flash.html' %}
+			<form action="" method="post" name="edit">
+				{{ form.hidden_tag() }}
+				<div class="form-group" style="padding-top: 0.5em">
+					<label>{{ _('Your nickname:') }}</label><br>
 					{{ form.nickname(size=24) }}
+					
 					{% for error in form.errors.nickname %}
-					<br><span style="color: red;">[{{ error }}]</span>
+						<br><span style="color: red;"><i>{{ error }}</i></span>
 					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<td>About yourself:</td>
-				<td>{{ form.about_me(cols=32, rows=4) }}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Save Changes"></td>
-			</tr>
-		</table>
-	</form>
+				</div>
+				<div class="form-group">
+					<label>{{ _('About yourself:') }}</label><br>
+					{{ form.about_me(cols=32, rows=4) }}
+				</div>
+				<div class="form-group" style="padding-top: 1em">
+					<button type="submit" class="btn btn-outline-success">
+						{{ _('Save Changes') }}
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+	</div>
+</div>
 {% endblock %}

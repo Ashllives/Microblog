@@ -2,7 +2,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<h1>An unexpected error has occured</h1>
-	<p>The administrator has been notified. Sorry for the inconvenience!</p>
-	<p><a href="{{ url_for('index') }}">Back</a></p>
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+		<div class="col-md-8">
+			<div class="form-wrap" style="padding-top: 3em">
+				<h1>{{ _('An unexpected error has occured')_ }}</h1>
+				<hr>
+			</div>
+			<div class="form-group">
+				<p><i>{{ _('The administrator has been notified. Sorry for the inconvenience!')_ }}</i></p>
+			</div>
+			<div class="form-group" style="padding-top: 1em">
+				<a class="btn btn-outline-success float-right" href="{{ url_for('index') }}" role="button">
+					{{ _('Back')_ }}
+				</a>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+	</div>
+</div>
 {% endblock %}

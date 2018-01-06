@@ -1,6 +1,6 @@
-from app import db
+import re
+from app import db, app
 from hashlib import md5
-
 
 followers = db.Table('followers',
 	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -45,6 +45,12 @@ class User(db.Model):
 			version += 1
 		return new_nickname
 
+	@staticmethod
+	def make_valid_nickname(nickname):
+		"""Function that takes a nickname and remove any characters that are not
+		letters, numbers, the dot or the underscore."""
+		return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
+
 	def get_id(self):
 		try:
 			return unicode(self.id) #python 2
@@ -75,6 +81,9 @@ class User(db.Model):
 		return '<User %r>' %(self.nickname)
 
 class Post(db.Model):
+	__searchable__ = ['body']
+
+
 	id = db.Column(db.Integer, primary_key=True)
 	body = db.Column(db.String(140))
 	timestamp = db.Column(db.DateTime)

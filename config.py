@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# mail server settings
-MAIL_SERVER = 'localhost'
-MAIL_PORT = 25
-MAIL_USERNAME = None
-MAIL_PASSWORD = None
-# administrator list
-ADMINS = ['fallenarcher_che01@yahoo.com']
+# email server settings
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 WTF_CSRF_ENABLED=True
 SECRET_KEY = 'you-wil-never-guess'
@@ -21,3 +22,16 @@ OPENID_PROVIDERS = [
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+
+# available languages
+LANGUAGES = {
+	'en': 'English',
+	'es': 'Español'
+}
+
+# administrator list
+ADMINS = ['ashsevley@gmail.com']
+
+# pagination
+POSTS_PER_PAGE = 5
+MAX_SEARCH_RESULTS = 50

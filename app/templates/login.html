@@ -15,20 +15,43 @@ function set_openid(openid, pr)
 	form.elements['openid'].value = openid
 }
 </script>
-<h1>Sign In</h1>
-<form action="" method="post" name="login">
-	{{ form.hidden_tag() }}
-	<p>
-		Please enter your OpenID, or select one of the providers below:<br>
-		{{ form.openid(size=80) }}<br>
-		{% for error in form.openid.errors %}
-			<span style="color: red;">[{{ error }}]</span>
-		{% endfor%}<br>
-		|{% for pr in providers %}
-			<a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
-		{% endfor %}
-	</p>
-		<p>{{ form.remember_me }} Remember Me</p>
-		<p><input type="submit" value="Sign In"></p>
-	</form>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4" >
+			<!-- filler -->
+		</div>
+		<div class="col-md-4" >
+			<div class="form-wrap" style="padding-top: 3em">
+			{% include 'flash.html' %}
+			<h4>{{ _('Login') }}</h4>
+				<form class="form" action="" method="post" name="login">
+					{{ form.hidden_tag() }}
+					<div class="form-group">
+						<label>{{ _('Please enter your OpenID') }}<br></label>
+						{{ form.openid(size=50) }}<br>
+						{% for error in form.openid.errors %}
+							<span style="color: red;"><i>{{ error }}</i></span>
+						{% endfor%}
+					</div>
+					<div class="form-group">
+						<label>{{ _('Or select one of the providers below:') }}</label><br>
+						{% for pr in providers %}
+						<a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
+						{% endfor %}
+					</div>
+					<div class="checkbox">
+						<span class="character-checkbox">{{ form.remember_me }}</span>
+						<span class="label">{{ _('Remember Me') }}</span>
+					</div>
+					<div class="form-group" style="padding-top: 1em">
+						<button type="submit" class="btn btn-outline-success">{{ _('Sign In') }}</button></p>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-4" >
+			<!-- filler -->
+		</div>
+	</div>
+</div>
 {% endblock %}

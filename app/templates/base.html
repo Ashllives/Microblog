@@ -1,29 +1,55 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		{% if title %}
+		{% if title %}	
 		<title>{{ title }} - microblog</title>
 		{% else %}
 		<title>microblog</title>
 		{% endif %}
-	</head>
+
+		<link href="/static/css/bootstrap.cecille.css" rel="stylesheet" media="screen">
+        <script src="/static/js/jquery-3.2.1.cecille.slim.min.js"></script>
+        <script src="/static/js/popper.cecille.min.js"></script>
+        <script src="/static/js/bootstrap.cecille.js"></script>
+        <script src="/static/js/moment.min.js"></script>
+
+        {% if g.locale != 'en' %}
+        <script src="/static/js/moment-{{ g.locale }}.min.js"></script>
+        {% endif %}
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>	
 	<body>
-		<div>Microblog:
-			<a href="/index">Home</a>
-			{% if g.user.is_authenticated %}
-			|	<a href="{{ url_for('user', nickname=g.user.nickname)}}">Your Profile</a>
-			|	<a href="{{ url_for('logout') }}">Logout</a>
-			{% endif %}
-		</div>
-		<hr>
-		{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<ul>
-		{% for message in messages %}
-			<li>{{ message }}</li>
-		{% endfor %}	
-		</ul>
-		{% endif %}
-		{% endwith %}
-		{% block content %}{% endblock%}
-	</body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-success">
+            <a class="navbar-brand" href="/">microblog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">{{ _('Home') }}<span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if g.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user', nickname=g.user.nickname) }}">{{ _('Your Profile') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if g.user.is_authenticated %}
+                <form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post" name="search">
+                    {{ g.search_form.hidden_tag() }}{{ g.search_form.search_user(size=20) }}
+                    <button class="btn btn-outline-light" type="submit">{{ _('Search') }}</button>
+                </form>
+                {% endif %}
+            </div>
+        </nav>
+        <div class="row">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
 </html>

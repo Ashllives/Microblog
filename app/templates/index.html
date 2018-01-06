@@ -2,29 +2,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Hi, {{ g.user.nickname }}!</h1>
-	<form action="" method="post" name="post">
-		{{ form.hidden_tag() }}
-		<table>
-			<tr>
-				<td>Say something:</td>
-				<td>{{ form.post(size=30, maxlength=140 )}}</td>
-				<td>
-				{% for error in form.post.errors %}
-				<span style="color: red;">[{{ error }}]</span><br>
-				{% endfor %}	
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Post!"></td>
-				<td></td>
-			</tr>
-		</table>
-	</form>
-	{% for post in posts %}
-	<p>
-		{% include 'post.html' %}</b>
-	</p>
-	{% endfor %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+		<div class="col-md-8">
+			<div class="form-wrap" style="padding-top: 3em">
+			<h1>{{ _('Hi,') }} {{ g.user.nickname }}!</h1>
+			{% include 'flash.html' %}
+				<form action="" method="post" name="post">
+					{{ form.hidden_tag() }}
+					<div class="form-group">
+						<label>{{ _('Say something:') }}</label><br>
+						{{ form.post(size=55, maxlength=140 )}}
+						<button type="submit" class="btn btn-outline-success">{{ _('Post!') }}</button><br>
+						{% for error in form.post.errors %}
+							<span style="color: red;"><i>{{ error }}</i></span>
+						{% endfor %}	
+					</div>
+				</form>
+			</div>
+			<!-- posts is a Paginate object -->
+			{% for post in posts.items %}
+				{% include 'post.html' %}
+			{% endfor %}
+			<div class="form-group" style="padding-top: 1em">
+				{%if posts.has_prev %}
+					<a class="btn btn-outline-success" href="{{ url_for('index', page=posts.prev_num) }}" role="button">
+						&lt;&lt; {{ _('Newer posts') }}
+					</a>
+				{% else %}
+					<a class="btn btn-outline-success disabled" href="" role="button">
+						&lt;&lt; {{ _('Newer posts') }}
+					</a>
+				{% endif %}
+
+				{% if posts.has_next %}
+					<a class="btn btn-outline-success float-right" href="{{ url_for('index', page=posts.next_num) }}" role="button">
+						{{ _('Older posts') }} &gt;&gt;
+					</a>
+				{% else %}
+					<a class="btn btn-outline-success disabled float-right" href="" role="button">
+						{{ _('Older posts') }} &gt;&gt;
+					</a>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col-md-2">
+			<!-- filler -->
+		</div>
+	</div>
+</div>
 {% endblock %}

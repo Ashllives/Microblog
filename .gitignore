@@ -1,6 +1,3 @@
-# i dno not know when this appeared 
-pyvenv.cfg
-
 # empty folder for some reason
 Include
 
@@ -16,3 +13,7 @@ test.db
 
 # temporary folder for logs
 tmp
+
+*.pyc
+*.pyo
+*.mo
