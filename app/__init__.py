@@ -28,8 +28,9 @@ babel = Babel(app)
 
 class CustomJSONEncoder(JSONEncoder):
 	"""This class adds support for lazy translation texts to Flask's
-	JSON Encoder. This is necessary when flashing translated texts."""
-
+	JSON Encoder. This is necessary when flashing translated texts.
+	This installs a custom JSON encoder that forces the lazy texts to
+	be evaluated into strings prior to being converted to JSON."""
 	def default(self, obj):
 		from speaklater import is_lazy_string
 		if is_lazy_string(obj):
@@ -37,10 +38,10 @@ class CustomJSONEncoder(JSONEncoder):
 				return unicode(obj) # python 2
 			except NameError:
 				return str(obj) # python 3
+
 		return super(CustomJSONEncoder, self).default(obj)
 
 app.json_encoder = CustomJSONEncoder
-
 
 if not app.debug:
 	import logging

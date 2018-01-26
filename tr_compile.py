@@ -4,5 +4,5 @@ import sys
 if sys.platform == 'win32':
     pybabel = 'microblog\\Scripts\\pybabel'
 else:
-    pybabel = 'flask/bin/pybabel'
+    pybabel = 'microblog/bin/pybabel'
 os.system(pybabel + ' compile -d app/translations')

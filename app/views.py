@@ -5,7 +5,7 @@ from app import app, db, lm, oid, babel
 from .forms import LoginForm, EditForm, PostForm, SearchForm
 from datetime import datetime
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
-from .models import User, Post
+from .models import User, Post, UserPostHearts
 from .emails import follower_notification
 from config import LANGUAGES
 
@@ -92,13 +92,21 @@ def internal_error(error):
 @login_required
 def index(page=1):
 	form = PostForm()
+
 	if form.validate_on_submit():
-		post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
+
+		post = Post(body=form.post.data, 
+					timestamp=datetime.utcnow(), 
+					author=g.user)
+
 		db.session.add(post)
 		db.session.commit()
+
 		flash(gettext('Your post is now live!'))
+
 		return redirect(url_for('index'))
 	posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+	
 	return render_template("index.html",
 							title='Home',
 							form=form,
@@ -135,6 +143,77 @@ def edit():
 		form.nickname.data = g.user.nickname
 		form.about_me.data = g.user.about_me
 	return render_template('edit.html', form=form)
+
+@app.route('/delete/<int:id>')
+@login_required
+def delete(id):
+	post = Post.query.get(id)
+	if post is None:
+		flash(gettext('Post not found'))
+		return redirect(url_for('index'))
+
+	if post.author.id != g.user.id:
+		flash(gettext('You cannot delete this post.'))
+		return redirect(url_for('index'))
+	db.session.delete(post)
+	db.session.commit()
+	flash(gettext('Your post has been deleted.'))
+	return redirect(url_for('index'))
+
+@app.route('/edit_post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(id, page=1):
+	post = Post.query.get(id)
+	form = PostForm(obj=post)
+	
+	if request.method == 'GET':
+		form.post.data = post.body
+
+		db.session.delete(post)
+		db.session.commit()
+
+	if request.method == 'POST' and form.validate_on_submit():
+		new_post = request.form['post']
+
+		to_post = Post(body=new_post, 
+					timestamp=datetime.utcnow(), 
+					author=g.user)
+
+		db.session.add(to_post)
+		db.session.commit()
+		flash(gettext('Post updated.'))
+		return redirect(url_for('index'))
+
+	posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
+
+	return render_template('index.html', 
+							form=form,
+							posts=posts)
+
+@app.route('/heart_post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def heart_post(id, page=1):
+	post_to_heart = Post.query.filter_by(id=id).first()
+	user_name = User.query.filter_by(nickname=g.user.nickname).first()
+	
+	if not g.user.did_heart(post_to_heart):
+		heart = UserPostHearts(user_id=user_name.id, post_id=post_to_heart.id, timestamp=datetime.utcnow())
+		db.session.add(heart)
+		db.session.commit()
+		return redirect(url_for('index'))
+
+
+@app.route('/unheart_post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def unheart_post(id, page=1):
+	post = Post.query.filter_by(id=id).first()
+	post_to_unheart = UserPostHearts.query.filter_by(post_id=post.id).first()
+	user_name = User.query.filter_by(nickname=g.user.nickname).first()
+
+	if g.user.did_heart(post):
+		db.session.delete(post_to_unheart)
+		db.session.commit()
+		return redirect(url_for('index'))
 
 @app.route('/follow/<nickname>')
 @login_required

@@ -4,8 +4,12 @@ from hashlib import md5
 
 followers = db.Table('followers',
 	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-	db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
+	db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
+
+posthearts = db.Table('posthearts',
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
+	db.Column('timestamp', db.DateTime))
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +24,8 @@ class User(db.Model):
 								secondaryjoin=(followers.c.followed_id == id),
 								backref=db.backref('followers', lazy='dynamic'),
 								lazy='dynamic')
+	post_hearts = db.relationship('UserPostHearts', backref=db.backref('user_hearts', lazy='joined'),
+								  lazy='dynamic', cascade='all, delete-orphan')
 
 	@property
 	def is_authenticated(self):
@@ -74,6 +80,9 @@ class User(db.Model):
 	def is_following(self, user):
 		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
+	def did_heart(self, post):
+		return self.post_hearts.filter(UserPostHearts.user_id == self.id).filter(UserPostHearts.post_id == post.id).count() > 0
+
 	def followed_posts(self):
 		return Post.query.join(followers, (followers.c.followed_id == Post.user_id)).filter(followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
 
@@ -88,6 +97,20 @@ class Post(db.Model):
 	body = db.Column(db.String(140))
 	timestamp = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	user_hearts = db.relationship('UserPostHearts', backref=db.backref('post_hearts', lazy='joined'),
+								   lazy='dynamic', cascade='all, delete-orphan')
+
+	def with_heart(self):
+		return self.user_hearts.filter(UserPostHearts.post_id == self.id).count() > 0
 
 	def __repr__(self):
 		return '<Post %r>' %(self.body)
+
+class UserPostHearts(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	timestamp = db.Column(db.DateTime)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+	def __repr__(self):
+		return '<Timestamp %r>' %(self.timestamp)

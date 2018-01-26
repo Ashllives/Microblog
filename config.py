@@ -11,7 +11,7 @@ MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 WTF_CSRF_ENABLED=True
-SECRET_KEY = 'you-wil-never-guess'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 OPENID_PROVIDERS = [
 	{'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},

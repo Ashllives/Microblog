@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-06 12:51+0800\n"
-"PO-Revision-Date: 2018-01-06 12:52+0800\n"
+"POT-Creation-Date: 2018-01-26 14:35+0800\n"
+"PO-Revision-Date: 2018-01-26 14:36+0800\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -39,54 +39,88 @@ msgstr "El apodo ya estÃ¡ en uso. Elija otro."
 msgid "Invalid login. Please try again."
 msgstr "Inicio de sesión no válido. Por favor, inténtelo de nuevo."
 
-#: app/views.py:99
+#: app/views.py:105
 msgid "Your post is now live!"
 msgstr "¡Tu post está ahora en vivo!"
 
-#: app/views.py:132
+#: app/views.py:140
 msgid "Your changes have been saved."
 msgstr "Los cambios han sido guardados exitosamente."
 
-#: app/views.py:144 app/views.py:168
+#: app/views.py:152
+msgid "Post not found"
+msgstr "Entrada no encontrada"
+
+#: app/views.py:156
+msgid "You cannot delete this post."
+msgstr "No se puede eliminar este tema."
+
+#: app/views.py:160
+msgid "Your post has been deleted."
+msgstr "Tu articulo ha sido eliminado."
+
+#: app/views.py:184
+msgid "Post updated."
+msgstr "Contenido actualizado."
+
+#: app/views.py:223 app/views.py:247
 msgid "User  not found."
 msgstr "Usuario no encontrado."
 
-#: app/views.py:148
+#: app/views.py:227
 msgid "You can't follow yourself!"
 msgstr "No puedes preguntarte a ti mismo!"
 
-#: app/views.py:153
+#: app/views.py:232
 #, python-format
 msgid "Cannot follow %(nickname)s."
 msgstr "No se puede seguir %(nickname)s."
 
-#: app/views.py:159
+#: app/views.py:238
 #, python-format
 msgid "You are now following %(nickname)s!"
 msgstr "Ahora sigues %(nickname)s!"
 
-#: app/views.py:172
+#: app/views.py:251
 msgid "You can't unfollow yourself!"
 msgstr "No puedes preguntarte a ti mismo!"
 
-#: app/views.py:177
+#: app/views.py:256
 #, python-format
 msgid "Cannot unfollow %(nickname)s."
 msgstr "No puedes dejar de seguir %(nickname)s."
 
-#: app/views.py:182
+#: app/views.py:261
 #, python-format
 msgid "You have stopped following %(nickname)s."
 msgstr "Ha dejado tras %(nickname)s."
 
-#: app/views.py:188
+#: app/views.py:267
 msgid "Invalid search."
 msgstr "Búsqueda no válida."
 
-#: app/views.py:197
+#: app/views.py:276
 #, python-format
 msgid "No results found for '%(query)s'."
 msgstr "No se encontraron resultados para '%(query)s'."
+
+#: app/templates/404.html:12
+msgid "File Not Found"
+msgstr "Archivo no encontrado"
+
+#: app/templates/404.html:17 app/templates/500.html:20
+msgid "Back"
+msgstr "Parte trasera"
+
+#: app/templates/500.html:12
+msgid "An unexpected error has occured"
+msgstr "Se ha producido un error inesperado"
+
+#: app/templates/500.html:16
+msgid "The administrator has been notified. Sorry for the inconvenience!"
+msgstr ""
+"El administrador ha sido notificado. ¡Lo siento por los inconvenientes "
+"ocasionados!"
 
 #: app/templates/base.html:32
 msgid "Home"
@@ -124,21 +158,13 @@ msgstr "Guardar cambios"
 msgid "Hi,"
 msgstr "Hola,"
 
-#: app/templates/index.html:17
-msgid "Say something:"
-msgstr "Digo algo:"
-
-#: app/templates/index.html:19
-msgid "Post!"
-msgstr "Enviar!"
-
-#: app/templates/index.html:33 app/templates/index.html:37
-#: app/templates/user.html:42 app/templates/user.html:46
+#: app/templates/index.html:46 app/templates/index.html:50
+#: app/templates/user.html:50 app/templates/user.html:54
 msgid "Newer posts"
 msgstr "Nuevos posts"
 
-#: app/templates/index.html:43 app/templates/index.html:47
-#: app/templates/user.html:52 app/templates/user.html:56
+#: app/templates/index.html:56 app/templates/index.html:60
+#: app/templates/user.html:60 app/templates/user.html:64
 msgid "Older posts"
 msgstr "Publicaciones Antiguas"
 
@@ -166,6 +192,14 @@ msgstr "Registrarse"
 #, python-format
 msgid "%(nickname)s said %(when)s:"
 msgstr "%(nickname)s dijo%(when)s:"
+
+#: app/templates/post_post.html:2
+msgid "Say something:"
+msgstr "Digo algo:"
+
+#: app/templates/post_post.html:6
+msgid "Post!"
+msgstr "Enviar!"
 
 #: app/templates/search_results.html:12
 msgid "Search results for "
@@ -199,6 +233,14 @@ msgstr "Seguir"
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
+#: app/templates/user.html:39
+msgid "Edit Post"
+msgstr "Editar post"
+
+#: app/templates/user.html:42
+msgid "Delete"
+msgstr "Eliminar"
+
 #~ msgid "User %s not found."
 #~ msgstr "Usuario no encontrado."
 
@@ -216,3 +258,6 @@ msgstr "Dejar de seguir"
 
 #~ msgid "No results found for '%s'."
 #~ msgstr "No hay resultados para  %s."
+
+#~ msgid "Translate"
+#~ msgstr "Traducir"

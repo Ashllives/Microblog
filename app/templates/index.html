@@ -14,18 +14,31 @@
 				<form action="" method="post" name="post">
 					{{ form.hidden_tag() }}
 					<div class="form-group">
-						<label>{{ _('Say something:') }}</label><br>
-						{{ form.post(size=55, maxlength=140 )}}
-						<button type="submit" class="btn btn-outline-success">{{ _('Post!') }}</button><br>
-						{% for error in form.post.errors %}
-							<span style="color: red;"><i>{{ error }}</i></span>
-						{% endfor %}	
+						{% include 'post_post.html' %}	
 					</div>
 				</form>
 			</div>
 			<!-- posts is a Paginate object -->
 			{% for post in posts.items %}
 				{% include 'post.html' %}
+
+				{% if not g.user.did_heart(post) %}
+					{% if not post.with_heart() %}
+						<a href="{{ url_for('heart_post', id=post.id) }}" class="text-success" style="padding-left: 5em">
+							<img src="/static/images/gray-heart-resized-20.png">
+						</a>
+					{% else %}
+						<a href="{{ url_for('heart_post', id=post.id) }}" class="text-success" style="padding-left: 5em">
+							<img src="/static/images/gray-heart-resized-20.png">
+						</a>{{ post.user_hearts.count() }}
+					{% endif %}
+				{% else %}
+					{% if post.with_heart() %}
+						<a href="{{ url_for('unheart_post', id=post.id) }}" class="text-success" style="padding-left: 5em">
+							<img src="/static/images/green-heart-resized-20.png">
+						</a>{{ post.user_hearts.count() }}
+					{% endif %}
+				{% endif %}
 			{% endfor %}
 			<div class="form-group" style="padding-top: 1em">
 				{%if posts.has_prev %}

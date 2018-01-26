@@ -1,0 +1,10 @@
+<label>
+    {{ _('Say something:') }}
+</label><br>
+{{ form.post(size=55, maxlength=140 )}}
+<button type="submit" class="btn btn-outline-success">
+    {{ _('Post!') }}
+</button><br>
+{% for error in form.post.errors %}
+    <span style="color: red;"><i>{{ error }}</i></span>
+{% endfor %}    
